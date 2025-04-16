@@ -23,23 +23,14 @@ func (r *ReturnProduct) ReturnProducts(c echo.Context) error {
 		Mysql: r.Mysql,
 	}
 	req := entity.ReturnProducts{}
-	if err := c.Bind(req); err != nil {
+	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadGateway, entity.Response{
 			Status:  401,
 			Message: constant.INVAILD_PARAMS,
 			Error:   err.Error(),
 		})
 	}
-	returnDate, err := utils.FormateDate()
-	if err != nil {
-		return c.JSON(http.StatusBadGateway, entity.Response{
-			Status:  401,
-			Message: constant.RETURN_DATE_REQUIRED,
-			Error:   err.Error(),
-		})
-	}
-
-	req.ReturnDate = returnDate
+	req.ReturnDate, _ = utils.FormateDate()
 
 	if err := returnProdutUsecase.ReturnProducts(req); err != nil {
 		return c.JSON(http.StatusBadGateway, entity.Response{
