@@ -32,6 +32,16 @@ func (r *ReturnProduct) ReturnProducts(c echo.Context) error {
 	}
 	req.ReturnDate, _ = utils.FormateDate()
 
+	validateErr := utils.ValidateStruct(req)
+
+	if validateErr != nil {
+		return c.JSON(http.StatusBadRequest, entity.Response{
+			Status:  400,
+			Message: constant.INVAILD_PARAMS,
+			Error:   validateErr,
+		})
+	}
+
 	if err := returnProdutUsecase.ReturnProducts(req); err != nil {
 		return c.JSON(http.StatusBadGateway, entity.Response{
 			Status:  401,
