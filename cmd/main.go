@@ -6,6 +6,8 @@ import (
 
 	"e-commerce-return-tracker/connectors"
 
+	"e-commerce-return-tracker/repository"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,6 +17,7 @@ func init() {
 
 func main() {
 	fmt.Println("Main func created")
+	repository.SingleMysqlConnection()
 	e := echo.New()
 	port := os.Getenv("PORT")
 	if port == "" {
